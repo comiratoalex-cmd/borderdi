@@ -2,25 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>BORDER OBS</title>
+<title>Border OBS Mode</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  html,body {
-    margin: 0;
-    padding: 0;
-    background: transparent;
-    overflow: hidden;
+  html,body{
+    margin:0;
+    padding:0;
+    background:transparent;
+    overflow:hidden;
   }
 
   #border {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 20px;
-    pointer-events: none;
-    background-size: 400% 400%;
-    box-shadow: 0 0 var(--g, 8px) var(--colorGlow, #fff);
+    position:fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    height:30px;
+    pointer-events:none;
+    background-size:400% 400%;
+    box-shadow:0 0 var(--g,8px) var(--colorGlow,#fff);
   }
 </style>
 </head>
@@ -29,86 +29,65 @@
 <div id="border"></div>
 
 <script>
-/* =============================
-   OBS MODE — HASH LOADER
-============================= */
-
-const border = document.getElementById("border");
-
-function parseHash() {
+/* =============== HASH LOADER ================== */
+function getParams() {
   const params = {};
-  window.location.hash.replace("#", "").split("&").forEach(p => {
-    if (!p.includes("=")) return;
-    const [k, v] = p.split("=");
-    params[k] = decodeURIComponent(v);
+  const hash = window.location.hash.replace("#", "").split("&");
+  hash.forEach(item => {
+    const [key, val] = item.split("=");
+    if (key && val) params[key] = decodeURIComponent(val);
   });
   return params;
 }
 
-const cfg = parseHash();
+const cfg = getParams();
 
-/* Valores */
+/* VALIDAÇÃO: se não vier cor, usa fallback */
 const colors = [
-  cfg.c1, cfg.c2, cfg.c3, cfg.c4, cfg.c5, cfg.c6
+  cfg.c1 || "#ff00ff",
+  cfg.c2 || "#00ffff",
+  cfg.c3 || "#0000ff",
+  cfg.c4 || "#00ff00",
+  cfg.c5 || "#ffff00",
+  cfg.c6 || "#ff8800"
 ];
 
-const speed = Number(cfg.speed ?? 10);
-const direction = cfg.dir ?? "90deg";
-const glow = Number(cfg.glow ?? 8);
-const height = Number(cfg.h ?? 22);
-const type = cfg.type ?? "bar";
+const border = document.getElementById("border");
 
-/* aplicar variáveis */
+const speed = Number(cfg.speed || 10);
+const direction = cfg.dir || "90deg";
+const glow = Number(cfg.glow || 8);
+const height = Number(cfg.h || 22);
+const type = cfg.type || "bar";
+
 document.documentElement.style.setProperty("--g", glow + "px");
-document.documentElement.style.setProperty("--colorGlow", colors[3]);
+document.documentElement.style.setProperty("--colorGlow", colors[1]);
 
-/* aplicar altura */
-border.style.height = height + 10 + "px";
+/* ALTURA */
+border.style.height = (height + 10) + "px";
 
-/* tipo */
-if (type === "top") {
-  border.style.top = "0";
-  border.style.width = "100vw";
-}
-if (type === "bottom") {
-  border.style.bottom = "0";
-  border.style.top = "";
-  border.style.width = "100vw";
-}
-if (type === "left") {
-  border.style.left = "0";
-  border.style.top = "0";
-  border.style.width = height + "px";
-  border.style.height = "100vh";
-}
-if (type === "right") {
-  border.style.right = "0";
-  border.style.left = "";
-  border.style.top = "0";
-  border.style.width = height + "px";
-  border.style.height = "100vh";
-}
-if (type === "fullframe") {
-  border.style.width = "100vw";
-  border.style.height = "100vh";
-}
+/* POSICIONAMENTO */
+if (type==="top") border.style.top = "0";
+if (type==="bottom") { border.style.bottom="0"; border.style.top=""; }
+if (type==="left") { border.style.width = height+"px"; border.style.height="100vh"; }
+if (type==="right"){ border.style.right="0"; border.style.left=""; border.style.width=height+"px"; border.style.height="100vh"; }
+if (type==="fullframe"){ border.style.width="100vw"; border.style.height="100vh"; }
 
-/* gradiente estático */
+/* GRADIENTE */
 border.style.background = `linear-gradient(${direction}, ${colors.join(",")})`;
-
-/* CORREÇÃO IMPORTANTE:
-   Colocar background-position inicial */
 border.style.backgroundPosition = "0% 50%";
 
-/* =============================
-   AGBC ANIMATION — FUNCIONANDO
-============================= */
-
+/* =============== ANIMAÇÃO AGBC ================== */
 let offset = 0;
-
 function animate() {
-  offset += speed * 0.0008;
+  offset += speed * 0.001;
   if (offset > 1) offset = 0;
 
-  /* CORREÇÃO #1 — AQUI ESTAVA O BUG:
-     OBS precisa de "%” e
+  border.style.backgroundPosition = `${offset * 400}% 50%`;
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>
