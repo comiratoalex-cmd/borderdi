@@ -1,28 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Neon Overlay Generator PRO</title>
+  <title>Neon Overlay Generator — SUPER PRO MAX</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
-  <div class="sidebar">
+  <!-- BACKGROUND PARTICLES -->
+  <canvas id="particles"></canvas>
 
-    <img src="assets/logo.png" class="logo" />
+  <!-- COLLAPSE BUTTON -->
+  <div id="collapseBtn">☰</div>
 
-    <h2>Neon Overlay Generator PRO</h2>
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+
+    <div class="title-area">
+      <h1>Neon Generator</h1>
+      <h2>SUPER PRO MAX</h2>
+    </div>
+
+    <!-- THEME SWITCH -->
+    <div class="section">
+      <label>Theme</label>
+      <button id="themeToggle">Toggle Theme</button>
+    </div>
 
     <!-- COLORS -->
     <div class="section">
-      <label>Colors (up to 6)</label>
-      <input type="color" id="c1" value="#ff6ad5">
-      <input type="color" id="c2" value="#b96bff">
-      <input type="color" id="c3" value="#6da6ff">
-      <input type="color" id="c4" value="#3dfff2">
-      <input type="color" id="c5" value="#ffec8a">
-      <input type="color" id="c6" value="#ff9e7b">
+      <label>Colors</label>
+      <div class="color-grid">
+        <input type="color" id="c1" value="#ff4df2">
+        <input type="color" id="c2" value="#b96bff">
+        <input type="color" id="c3" value="#6da6ff">
+        <input type="color" id="c4" value="#20ffe7">
+        <input type="color" id="c5" value="#ffec7a">
+        <input type="color" id="c6" value="#ff9e7b">
+      </div>
+    </div>
+
+    <!-- RGB MODES -->
+    <div class="section">
+      <label>RGB Modes</label>
+      <select id="rgbMode">
+        <option value="off">Off</option>
+        <option value="rainbow">Rainbow Smooth</option>
+        <option value="rainbowFast">Rainbow Fast</option>
+        <option value="gamer">Gamer RGB</option>
+        <option value="aurora">Aurora RGB</option>
+        <option value="ultraSlow">RGB Ultra Slow</option>
+        <option value="firestorm">Firestorm RGB</option>
+      </select>
     </div>
 
     <!-- PRESETS -->
@@ -30,81 +62,92 @@
       <label>Preset</label>
       <select id="preset">
         <option value="custom">Custom</option>
-        <option value="aurora">Aurora Borealis</option>
-        <option value="pastel">Pastel Neon</option>
+        <option value="pastel">Pastel</option>
+        <option value="aurora">Aurora</option>
         <option value="cyber">Cyberpunk</option>
+        <option value="vapor">Vaporwave</option>
         <option value="pride">Pride</option>
-        <option value="fog">DBD Fog Glow</option>
-        <option value="vaporwave">Vaporwave</option>
-        <option value="galaxy">Galaxy Pulse</option>
+        <option value="galaxy">Galaxy</option>
         <option value="inferno">Inferno</option>
-        <option value="ice">Ice Beam</option>
-        <option value="toxic">Toxic Green</option>
+        <option value="ice">Ice</option>
       </select>
     </div>
 
+    <!-- EFFECTS -->
+    <div class="section">
+      <label>Neon Pulse Effect</label>
+      <select id="pulseMode">
+        <option value="off">Off</option>
+        <option value="breath">Breathing</option>
+        <option value="pulse">Pulse</option>
+        <option value="wave">Wave</option>
+        <option value="softwaves">Soft Waves</option>
+        <option value="doubleglow">Double Glow</option>
+      </select>
+    </div>
+
+    <!-- BORDER TYPE -->
+    <div class="section">
+      <label>Border Type</label>
+      <select id="borderType">
+        <option value="bar">Single Bar</option>
+        <option value="top">Top</option>
+        <option value="bottom">Bottom</option>
+        <option value="left">Left</option>
+        <option value="right">Right</option>
+        <option value="fullframe">360° Full Frame</option>
+      </select>
+    </div>
+
+    <!-- CONTROLS -->
     <div class="section">
       <label>Direction</label>
       <select id="direction">
         <option value="90deg">Left → Right</option>
         <option value="270deg">Right → Left</option>
-        <option value="0deg">Top → Bottom</option>
-        <option value="180deg">Bottom → Top</option>
         <option value="45deg">Diagonal ↗</option>
         <option value="135deg">Diagonal ↘</option>
       </select>
     </div>
 
-    <!-- SPEED -->
     <div class="section">
-      <label>Speed (smooth)</label>
-      <input type="range" id="speedRange" min="1" max="20" value="6">
-    </div>
-
-    <!-- EXTRA CONTROLS -->
-    <div class="section">
-      <label>Glow intensity</label>
-      <input type="range" id="glow" min="0" max="40" value="14">
+      <label>Speed</label>
+      <input type="range" id="speedRange" min="1" max="40" value="8">
     </div>
 
     <div class="section">
-      <label>Opacity</label>
-      <input type="range" id="opacity" min="10" max="100" value="100">
-    </div>
-
-    <div class="section">
-      <label>Brightness</label>
-      <input type="range" id="brightness" min="50" max="200" value="100">
-    </div>
-
-    <div class="section">
-      <label>Saturation</label>
-      <input type="range" id="saturation" min="0" max="200" value="100">
-    </div>
-
-    <div class="section">
-      <label>Blur Glow</label>
-      <input type="range" id="blur" min="0" max="40" value="0">
+      <label>Glow</label>
+      <input type="range" id="glow" min="0" max="50" value="18">
     </div>
 
     <div class="section">
       <label>Height (px)</label>
-      <input type="number" id="height" min="4" max="300" value="20">
+      <input type="number" id="height" min="4" max="250" value="22">
+    </div>
+
+    <!-- OBS LINK GENERATOR -->
+    <div class="section">
+      <label>OBS Link</label>
+      <input type="text" id="obsLink" readonly>
+      <button id="copyOBSLink">Copy OBS Link</button>
     </div>
 
     <!-- BUTTONS -->
-    <button id="copyCSS">📋 Copy CSS</button>
-    <button id="downloadPNG">🖼 Download PNG</button>
-    <button id="downloadWEBM">🎞 Download WEBM</button>
-    <button id="obsMode">🎬 OBS Fullscreen Mode</button>
+    <div class="btns">
+      <button id="copyCSS">Copy CSS</button>
+      <button id="downloadPNG">Download PNG</button>
+      <button id="downloadWEBM">Export WEBM</button>
+      <button id="obsMode">OBS Mode</button>
+    </div>
+
   </div>
 
-  <div class="preview-area">
+  <!-- PREVIEW MAIN BAR -->
+  <div class="preview-container">
     <div id="preview"></div>
-    <div class="fullscreen-btn" onclick="toggleFullscreen()">⛶</div>
   </div>
 
-  <script src="script.js"></script>
-
+  <script src="script.js" defer></script>
 </body>
+
 </html>
