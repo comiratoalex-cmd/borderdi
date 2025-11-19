@@ -1,163 +1,174 @@
-/* ======================================================
-   BORDERDI PRO V2 — THEOOO MODE (Glow Minimal + Medium Speed)
-====================================================== */
+<!DOCTYPE html>
+<html lang="en">
 
-/* ------------------------------------------------------
-   ELEMENT REFERENCES
------------------------------------------------------- */
-const preview = document.getElementById("preview");
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neon Overlay Generator — SUPER PRO MAX ULTRA</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-const cols = [c1, c2, c3, c4, c5, c6];
+<body>
 
-const speedRange = document.getElementById("speedRange");
-const direction = document.getElementById("direction");
-const heightControl = document.getElementById("height");
-const glow = document.getElementById("glow");
-const preset = document.getElementById("preset");
-const rgbMode = document.getElementById("rgbMode");
-const borderType = document.getElementById("borderType");
+  <!-- BACKGROUND PARTICLES -->
+  <canvas id="particles"></canvas>
 
-const obsMode = document.getElementById("obsMode");
-const downloadWEBM = document.getElementById("downloadWEBM");
-const copyCSS = document.getElementById("copyCSS");
+  <!-- COLLAPSE BUTTON -->
+  <div id="collapseBtn">☰</div>
 
-const obsLinkField = document.getElementById("obsLink");
-const copyOBSLink = document.getElementById("copyOBSLink");
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
 
-/* ------------------------------------------------------
-   AGBC GRADIENT ENGINE
------------------------------------------------------- */
+    <div class="title-area">
+      <h1>Neon Generator</h1>
+      <h2>SUPER PRO MAX ULTRA</h2>
+    </div>
 
-let agbcOffset = 0;
+    <!-- THEME SWITCH -->
+    <div class="section">
+      <label>Theme</label>
+      <button id="themeToggle">Toggle Theme</button>
+    </div>
 
-function animateAGBC() {
-  const speed = parseFloat(speedRange.value);
-  agbcOffset += speed * 0.0008;
-  if (agbcOffset > 1) agbcOffset = 0;
+    <!-- COLORS -->
+    <div class="section">
+      <label>Colors</label>
+      <div class="color-grid">
+        <input type="color" id="c1" value="#ff4df2">
+        <input type="color" id="c2" value="#b96bff">
+        <input type="color" id="c3" value="#6da6ff">
+        <input type="color" id="c4" value="#20ffe7">
+        <input type="color" id="c5" value="#ffec7a">
+        <input type="color" id="c6" value="#ff9e7b">
+      </div>
+    </div>
 
-  preview.style.backgroundPosition = `${agbcOffset * 400}% 50%`;
+    <!-- RGB MODES -->
+    <div class="section">
+      <label>RGB Modes</label>
+      <select id="rgbMode">
+        <option value="off">Off</option>
+        <option value="rainbow">Rainbow Smooth</option>
+        <option value="rainbowFast">Rainbow Fast</option>
+        <option value="gamer">Gamer RGB</option>
+        <option value="aurora">Aurora RGB</option>
+        <option value="ultraSlow">RGB Ultra Slow</option>
+        <option value="firestorm">Firestorm RGB</option>
+      </select>
+    </div>
 
-  requestAnimationFrame(animateAGBC);
-}
-animateAGBC();
+    <!-- PRESETS -->
+    <div class="section">
+      <label>Preset</label>
+      <select id="preset">
+        <option value="custom">Custom</option>
+        <option value="pastel">Pastel</option>
+        <option value="aurora">Aurora</option>
+        <option value="cyber">Cyberpunk</option>
+        <option value="vapor">Vaporwave</option>
+        <option value="pride">Pride</option>
+        <option value="galaxy">Galaxy</option>
+        <option value="inferno">Inferno</option>
+        <option value="ice">Ice</option>
+      </select>
+    </div>
 
-/* ------------------------------------------------------
-   MAIN UPDATE FUNCTION
------------------------------------------------------- */
-function update() {
-  const colors = cols.map(c => c.value);
-  const dir = direction.value;
-  const h = Number(heightControl.value);
-  const g = Number(glow.value);
+    <!-- EFFECTS -->
+    <div class="section">
+      <label>Neon Pulse Effect</label>
+      <select id="pulseMode">
+        <option value="off">Off</option>
+        <option value="breath">Breathing</option>
+        <option value="pulse">Pulse</option>
+        <option value="wave">Wave</option>
+        <option value="softwaves">Soft Waves</option>
+        <option value="doubleglow">Double Glow</option>
+      </select>
+    </div>
 
-  preview.style.height = (h + 10) + "px"; /* +10px glow minimal */
-  preview.style.background = `linear-gradient(${dir}, ${colors.join(",")})`;
-  preview.style.backgroundSize = "400% 400%";
-  preview.style.boxShadow = `0 0 ${g}px ${colors[3]}`;
+    <!-- BORDER TYPE -->
+    <div class="section">
+      <label>Border Type</label>
+      <select id="borderType">
+        <option value="bar">Single Bar</option>
+        <option value="top">Top</option>
+        <option value="bottom">Bottom</option>
+        <option value="left">Left</option>
+        <option value="right">Right</option>
+        <option value="fullframe">360° Full Frame</option>
+      </select>
+    </div>
 
-  applyBorderType();
-  generateOBSLink();
-}
+    <!-- DIRECTION -->
+    <div class="section">
+      <label>Direction</label>
+      <select id="direction">
+        <option value="90deg">Left → Right</option>
+        <option value="270deg">Right → Left</option>
+        <option value="45deg">Diagonal ↗</option>
+        <option value="135deg">Diagonal ↘</option>
+      </select>
+    </div>
 
-/* ------------------------------------------------------
-   BORDER TYPE
------------------------------------------------------- */
-function applyBorderType() {
-  preview.className = "";
+    <!-- SPEED CONTROL -->
+    <div class="section">
+      <label>Speed (Custom)</label>
+      <input type="range" id="speedRange" min="1" max="40" value="12">
+    </div>
 
-  switch (borderType.value) {
-    case "top": preview.classList.add("top"); break;
-    case "bottom": preview.classList.add("bottom"); break;
-    case "left": preview.classList.add("left"); break;
-    case "right": preview.classList.add("right"); break;
-    case "fullframe": preview.classList.add("fullframe"); break;
-  }
-}
+    <div class="section">
+      <label>Speed Presets</label>
+      <div class="speed-buttons">
+        <button class="speed-btn" data-speed="2">Ultra Slow</button>
+        <button class="speed-btn" data-speed="6">Slow</button>
+        <button class="speed-btn" data-speed="12">Normal (Recommended)</button>
+        <button class="speed-btn" data-speed="20">Fast</button>
+        <button class="speed-btn" data-speed="30">Hyper</button>
+        <button class="speed-btn" data-speed="40">Insane RGB</button>
+      </div>
+    </div>
 
-/* ------------------------------------------------------
-   OBS LINK GENERATOR (HASH SYSTEM)
------------------------------------------------------- */
-function generateOBSLink() {
-  const base = window.location.origin + window.location.pathname.replace("index.html","");
+    <!-- HEIGHT -->
+    <div class="section">
+      <label>Height (px)</label>
+      <input type="number" id="height" min="4" max="250" value="22">
+    </div>
 
-  const params = [
-    `type=${borderType.value}`,
-    `speed=${speedRange.value}`,
-    `dir=${direction.value}`,
-    `h=${heightControl.value}`,
-    `glow=${glow.value}`,
-    `c1=${c1.value}`,
-    `c2=${c2.value}`,
-    `c3=${c3.value}`,
-    `c4=${c4.value}`,
-    `c5=${c5.value}`,
-    `c6=${c6.value}`
-  ].join("&");
+    <!-- GLOW -->
+    <div class="section">
+      <label>Glow</label>
+      <input type="range" id="glow" min="0" max="50" value="8">
+    </div>
 
-  obsLinkField.value = `${base}obs.html#${params}`;
-}
+    <!-- OBS LINK GENERATOR -->
+    <div class="section">
+      <label>OBS Link</label>
+      <input type="text" id="obsLink" readonly>
+      <button id="copyOBSLink">Copy OBS Link</button>
+      <button id="obsMode">Open OBS Mode</button>
+    </div>
 
-copyOBSLink.onclick = () => {
-  navigator.clipboard.writeText(obsLinkField.value);
-  alert("OBS link copied!");
-};
+    <!-- BUTTONS -->
+    <div class="btns">
+      <button id="copyCSS">Copy CSS</button>
+      <button id="downloadPNG">Download PNG</button>
+      <button id="downloadWEBM">Export WEBM</button>
+    </div>
 
-/* ------------------------------------------------------
-   WEBM EXPORT (CANVAS MODE)
------------------------------------------------------- */
-downloadWEBM.onclick = () => {
-  alert("Recording 4 seconds…");
+  </div>
 
-  const canvas = document.createElement("canvas");
-  canvas.width = 1920;
-  canvas.height = Number(heightControl.value) + 10;
+  <!-- PREVIEW -->
+  <div class="preview-container">
+    <div id="preview"></div>
+  </div>
 
-  const ctx = canvas.getContext("2d");
+  <!-- WEBCAM CONTAINER -->
+  <video id="webcamVideo" autoplay playsinline muted></video>
 
-  let t = 0;
-  const chunks = [];
+  <!-- QR CODE -->
+  <img id="qrCode" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://twitch.tv/" />
 
-  const stream = canvas.captureStream(60);
-  const recorder = new MediaRecorder(stream, { mimeType: "video/webm; codecs=vp9" });
+  <script src="script.js" defer></script>
+</body>
 
-  recorder.ondataavailable = e => chunks.push(e.data);
-  recorder.onstop = () => {
-    const blob = new Blob(chunks, { type:"video/webm" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "neon.webm";
-    a.click();
-  };
-
-  recorder.start();
-
-  function draw() {
-    t += 0.008 * Number(speedRange.value);
-
-    const colors = cols.map(c => c.value);
-    const grad = ctx.createLinearGradient(0,0,canvas.width,0);
-    colors.forEach((c,i)=> grad.addColorStop(((i/colors.length)+t)%1,c));
-
-    ctx.fillStyle = grad;
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-
-    if (performance.now() < 4000) {
-      requestAnimationFrame(draw);
-    } else {
-      recorder.stop();
-    }
-  }
-
-  draw();
-};
-
-/* ------------------------------------------------------
-   OBS MODE OPEN
------------------------------------------------------- */
-obsMode.onclick = () => {
-  window.open(obsLinkField.value, "_blank");
-};
-
-/* INIT */
-update();
+</html>
