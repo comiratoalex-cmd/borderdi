@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BORDER OBS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  html,body {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  #border {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: calc(var(--h) + 10px); /* altura + 10px pro glow */
+    pointer-events: none;
+    border-radius: 0;
+    background: transparent;
+    mix-blend-mode: normal;
+    box-shadow: 0 0 var(--g) var(--colorGlow);
+    background-size: 400% 400%;
+  }
+</style>
+</head>
+<body>
+
+<div id="border"></div>
+
+<script>
+/* =============================
+   OBS MODE — HASH LOADER
+============================= */
+
+const border = document.getElementById("border");
+
+function parseHash() {
+  const params = {};
+  window.location.hash.replace("#","").split("&").forEach(p=>{
+    const [k,v] = p.split("=");
+    params[k] = decodeURIComponent(v);
+  });
+  return params;
+}
+
+const cfg = parseHash();
+
+/* Valores */
+const colors = [
+  cfg.c1, cfg.c2, cfg.c3, cfg.c4, cfg.c5, cfg.c6
+];
+
+const speed = Number(cfg.speed ?? 10);
+const direction = cfg.dir ?? "90deg";
+const glow = Number(cfg.glow ?? 8);
+const height = Number(cfg.h ?? 22);
+const type = cfg.type ?? "bar";
+
+/* aplicar */
+document.documentElement.style.setProperty("--g", glow + "px");
+document.documentElement.style.setProperty("--h", height + "px");
+document.documentElement.style.setProperty("--colorGlow", colors[3]);
+
+/* tipo */
+function applyType() {
+  if (type==="top") {
+    border.style.top = "0";
+    border.style.height = "calc(" + height + "px + 10px)";
+    border.style.width = "100vw";
+  }
+  if (type==="bottom") {
+    border.style.bottom = "0";
+    border.style.top = "";
+    border.style.height = "calc(" + height + "px + 10px)";
+    border.style.width = "100vw";
+  }
+  if (type==="left") {
+    border.style.left = "0";
+    border.style.top = "0";
+    border.style.height = "100vh";
+    border.style.width = height + "px";
+  }
+  if (type==="right") {
+    border.style.right = "0";
+    border.style.left = "";
+    border.style.top = "0";
+    border.style.height = "100vh";
+    border.style.width = height + "px";
+  }
+  if (type==="fullframe") {
+    border.style.top = "0";
+    border.style.left = "0";
+    border.style.width = "100vw";
+    border.style.height = "100vh";
+  }
+}
+applyType();
+
+/* gradiente */
+border.style.background = `linear-gradient(${direction}, ${colors.join(",")})`;
+
+/* AGBC ANIMATION */
+let offset = 0;
+function animate() {
+  offset += speed * 0.0008;
+  if (offset > 1) offset = 0;
+
+  border.style.backgroundPosition = `${offset * 400}% 50%`;
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>
