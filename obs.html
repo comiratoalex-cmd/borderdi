@@ -17,13 +17,10 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: calc(var(--h) + 10px); /* altura + 10px pro glow */
+    height: 20px;
     pointer-events: none;
-    border-radius: 0;
-    background: transparent;
-    mix-blend-mode: normal;
-    box-shadow: 0 0 var(--g) var(--colorGlow);
     background-size: 400% 400%;
+    box-shadow: 0 0 var(--g, 8px) var(--colorGlow, #fff);
   }
 </style>
 </head>
@@ -40,8 +37,9 @@ const border = document.getElementById("border");
 
 function parseHash() {
   const params = {};
-  window.location.hash.replace("#","").split("&").forEach(p=>{
-    const [k,v] = p.split("=");
+  window.location.hash.replace("#", "").split("&").forEach(p => {
+    if (!p.includes("=")) return;
+    const [k, v] = p.split("=");
     params[k] = decodeURIComponent(v);
   });
   return params;
@@ -60,60 +58,57 @@ const glow = Number(cfg.glow ?? 8);
 const height = Number(cfg.h ?? 22);
 const type = cfg.type ?? "bar";
 
-/* aplicar */
+/* aplicar variáveis */
 document.documentElement.style.setProperty("--g", glow + "px");
-document.documentElement.style.setProperty("--h", height + "px");
 document.documentElement.style.setProperty("--colorGlow", colors[3]);
 
-/* tipo */
-function applyType() {
-  if (type==="top") {
-    border.style.top = "0";
-    border.style.height = "calc(" + height + "px + 10px)";
-    border.style.width = "100vw";
-  }
-  if (type==="bottom") {
-    border.style.bottom = "0";
-    border.style.top = "";
-    border.style.height = "calc(" + height + "px + 10px)";
-    border.style.width = "100vw";
-  }
-  if (type==="left") {
-    border.style.left = "0";
-    border.style.top = "0";
-    border.style.height = "100vh";
-    border.style.width = height + "px";
-  }
-  if (type==="right") {
-    border.style.right = "0";
-    border.style.left = "";
-    border.style.top = "0";
-    border.style.height = "100vh";
-    border.style.width = height + "px";
-  }
-  if (type==="fullframe") {
-    border.style.top = "0";
-    border.style.left = "0";
-    border.style.width = "100vw";
-    border.style.height = "100vh";
-  }
-}
-applyType();
+/* aplicar altura */
+border.style.height = height + 10 + "px";
 
-/* gradiente */
+/* tipo */
+if (type === "top") {
+  border.style.top = "0";
+  border.style.width = "100vw";
+}
+if (type === "bottom") {
+  border.style.bottom = "0";
+  border.style.top = "";
+  border.style.width = "100vw";
+}
+if (type === "left") {
+  border.style.left = "0";
+  border.style.top = "0";
+  border.style.width = height + "px";
+  border.style.height = "100vh";
+}
+if (type === "right") {
+  border.style.right = "0";
+  border.style.left = "";
+  border.style.top = "0";
+  border.style.width = height + "px";
+  border.style.height = "100vh";
+}
+if (type === "fullframe") {
+  border.style.width = "100vw";
+  border.style.height = "100vh";
+}
+
+/* gradiente estático */
 border.style.background = `linear-gradient(${direction}, ${colors.join(",")})`;
 
-/* AGBC ANIMATION */
+/* CORREÇÃO IMPORTANTE:
+   Colocar background-position inicial */
+border.style.backgroundPosition = "0% 50%";
+
+/* =============================
+   AGBC ANIMATION — FUNCIONANDO
+============================= */
+
 let offset = 0;
+
 function animate() {
   offset += speed * 0.0008;
   if (offset > 1) offset = 0;
 
-  border.style.backgroundPosition = `${offset * 400}% 50%`;
-  requestAnimationFrame(animate);
-}
-animate();
-</script>
-
-</body>
-</html>
+  /* CORREÇÃO #1 — AQUI ESTAVA O BUG:
+     OBS precisa de "%” e
