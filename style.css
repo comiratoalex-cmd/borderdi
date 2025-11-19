@@ -1,0 +1,99 @@
+body {
+  margin: 0;
+  background: #05050a;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  color: white;
+}
+
+.sidebar {
+  width: 340px;
+  background: rgba(15, 15, 25, 0.92);
+  backdrop-filter: blur(14px);
+  border-right: 2px solid rgba(255,255,255,0.05);
+  padding: 22px;
+  overflow-y: auto;
+}
+
+.logo {
+  width: 140px;
+  margin-bottom: 18px;
+  filter: drop-shadow(0 0 12px #ff4df2);
+}
+
+.section {
+  margin-bottom: 22px;
+}
+
+label {
+  font-size: 14px;
+  opacity: 0.8;
+  display: block;
+  margin-bottom: 6px;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  background: #111;
+  border: 1px solid #333;
+  color: white;
+  margin-bottom: 10px;
+}
+
+input[type="color"] {
+  padding: 0;
+  height: 40px;
+  cursor: pointer;
+}
+
+button {
+  width: 100%;
+  background: linear-gradient(90deg,#ff3fbd,#5f65ff,#00eaff);
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 12px;
+  color: white;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
+  opacity: .85;
+}
+
+.preview-area {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+#preview {
+  width: 90%;
+  height: 20px;
+  border-radius: 10px;
+  background-size: 400% 400%;
+  filter: brightness(1) saturate(1);
+  transition: 0.15s linear;
+}
+
+.fullscreen-btn {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 6px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 20px;
+}
